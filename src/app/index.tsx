@@ -1,98 +1,49 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { Alert, Pressable, Text, View } from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { AppScreen, BodyText, Mascot, PaperCard, PetalButton, Spacer } from '@/components/ui';
+import { colors, fonts, spacing } from '@/constants/theme';
+import { useGame } from '@/state/game-context';
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const game = useGame();
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+    <AppScreen testID="home-screen" contentStyle={{ paddingTop: spacing.xl }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={{ color: colors.cocoaSoft, fontFamily: fonts.bodyBold, fontSize: 12, letterSpacing: 1.4 }}>PETALPHONE</Text>
+        <Pressable accessibilityRole="button" onPress={() => router.push('/settings')} hitSlop={10}>
+          <Text style={{ color: colors.cocoa, fontFamily: fonts.bodyBold, fontSize: 15 }}>Settings</Text>
+        </Pressable>
+      </View>
+      <Mascot size={168} />
+      <View style={{ alignItems: 'center', gap: spacing.sm }}>
+        <Text accessibilityRole="header" style={{ color: colors.cocoa, fontFamily: fonts.display, fontSize: 42, lineHeight: 46, textAlign: 'center' }}>
+          Pass, draw, guess
+        </Text>
+        <BodyText centered>One phone. A room full of people. See where each idea ends up.</BodyText>
+      </View>
+      <Spacer />
+      <View style={{ gap: spacing.sm }}>
+        {game.activeSession ? (
+          <>
+            <PetalButton tone="coral" onPress={() => router.push('/pass')}>Resume your game</PetalButton>
+            <PetalButton tone="secondary" onPress={() => Alert.alert('Start over?', 'The unfinished game will be removed.', [
+              { text: 'Keep playing', style: 'cancel' },
+              { text: 'Start over', style: 'destructive', onPress: () => { game.abandonSession(); router.push('/players'); } },
+            ])}>Start over</PetalButton>
+          </>
+        ) : <PetalButton onPress={() => router.push('/players')}>Start a game</PetalButton>}
+        <PetalButton tone="secondary" onPress={() => router.push('/how-to-play')}>How to play</PetalButton>
+      </View>
+      <PaperCard title={game.fullGardenUnlocked ? 'Full Garden is ready' : 'Full Garden'} onPress={() => router.push('/full-garden')}>
+        {game.fullGardenUnlocked
+          ? 'Choose from ten decks, make your own prompts and change the paper mood.'
+          : '480 more prompts, custom decks and five extra paper themes.'}
+      </PaperCard>
+      <BodyText centered small>No ads. No account. Game history stays on this phone.</BodyText>
+    </AppScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
