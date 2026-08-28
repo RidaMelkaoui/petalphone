@@ -1,0 +1,88 @@
+:root {
+  --cream: #f7ebd5;
+  --surface: #fff9ef;
+  --quiet: #f0debc;
+  --cocoa: #4a382e;
+  --soft: #776359;
+  --leaf: #81965f;
+  --border: #e6cfab;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--cream); color: var(--cocoa); }
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", system-ui, sans-serif;
+  line-height: 1.65;
+}
+
+a { color: var(--cocoa); text-underline-offset: 3px; }
+
+.wrap { width: min(760px, calc(100% - 36px)); margin: 0 auto; }
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 0;
+}
+
+.brand { font-family: Georgia, serif; font-size: 20px; font-weight: 700; text-decoration: none; }
+
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; }
+
+main { padding: 34px 0 72px; }
+
+.hero { text-align: center; }
+
+.icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 34px;
+  box-shadow: 0 14px 32px rgba(74, 56, 46, 0.12);
+}
+
+h1, h2, h3 { font-family: Georgia, serif; line-height: 1.2; }
+h1 { margin: 24px 0 12px; font-size: clamp(38px, 8vw, 64px); }
+h2 { margin-top: 38px; font-size: 28px; }
+h3 { margin-top: 28px; font-size: 20px; }
+p, li { color: var(--soft); }
+
+.lead { max-width: 570px; margin: 0 auto; font-size: 20px; }
+
+.card {
+  margin-top: 30px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: 0 8px 22px rgba(74, 56, 46, 0.08);
+  padding: 24px;
+}
+
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 28px; }
+.fact { border-radius: 18px; background: var(--quiet); padding: 18px; text-align: center; }
+.fact strong { display: block; font-family: Georgia, serif; font-size: 20px; }
+
+.button {
+  display: inline-block;
+  margin-top: 24px;
+  border-radius: 999px;
+  background: var(--leaf);
+  color: white;
+  font-weight: 700;
+  padding: 14px 24px;
+  text-decoration: none;
+}
+
+.meta { font-size: 14px; }
+
+footer { border-top: 1px solid var(--border); padding: 26px 0 42px; font-size: 14px; }
+
+@media (max-width: 620px) {
+  header { align-items: flex-start; flex-direction: column; }
+  .facts { grid-template-columns: 1fr; }
+}
+
