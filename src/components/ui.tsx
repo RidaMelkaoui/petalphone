@@ -140,10 +140,10 @@ export function PetalButton({
 }) {
   const { preferences } = useGame();
   const palette = {
-    primary: { background: colors.leaf, border: colors.leaf, text: colors.white },
+    primary: { background: colors.leaf, border: colors.leaf, text: colors.ink },
     secondary: { background: colors.surface, border: colors.border, text: colors.cocoa },
     ghost: { background: colors.transparent, border: colors.transparent, text: colors.cocoa },
-    coral: { background: colors.coral, border: colors.coral, text: colors.white },
+    coral: { background: colors.coral, border: colors.coral, text: colors.ink },
   }[tone];
 
   return (
@@ -175,7 +175,7 @@ export function PetalButton({
       {busy ? (
         <ActivityIndicator color={palette.text} />
       ) : (
-        <Text style={{ color: disabled ? colors.white : palette.text, fontFamily: fonts.bodyBold, fontSize: 16 }}>
+        <Text style={{ color: disabled ? colors.ink : palette.text, fontFamily: fonts.bodyBold, fontSize: 16 }}>
           {children}
         </Text>
       )}
@@ -246,7 +246,7 @@ export function ChoiceChip({ selected, label, onPress, locked = false }: { selec
         paddingHorizontal: 18,
       })}
     >
-      <Text style={{ color: selected ? colors.white : colors.cocoa, fontFamily: fonts.bodyBold, fontSize: 15 }}>
+      <Text style={{ color: selected ? colors.ink : colors.cocoa, fontFamily: fonts.bodyBold, fontSize: 15 }}>
         {locked ? `${label} · Full Garden` : label}
       </Text>
     </Pressable>

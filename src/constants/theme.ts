@@ -6,6 +6,7 @@ export const colors = {
   quiet: '#F0DEBC',
   cocoa: '#4A382E',
   cocoaSoft: '#776359',
+  ink: '#2F241E',
   leaf: '#8DA269',
   leafDark: '#6D8350',
   coral: '#D98571',

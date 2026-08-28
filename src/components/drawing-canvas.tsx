@@ -109,7 +109,7 @@ export function DrawingCanvas({
         paddingHorizontal: 15,
       })}
     >
-      <Text style={{ color: active ? colors.white : colors.cocoa, fontFamily: fonts.bodyBold, fontSize: 14 }}>{label}</Text>
+      <Text style={{ color: active ? colors.ink : colors.cocoa, fontFamily: fonts.bodyBold, fontSize: 14 }}>{label}</Text>
     </Pressable>
   );
 
