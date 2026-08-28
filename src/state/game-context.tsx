@@ -78,6 +78,7 @@ const initialPersistedState: PersistedGameState = {
 };
 
 const GameContext = createContext<GameContextValue | null>(null);
+const debugFullGardenUnlocked = __DEV__ && process.env.EXPO_PUBLIC_FULL_GARDEN_DEBUG_UNLOCK === '1';
 
 function makeId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -133,7 +134,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   });
   const [activeSession, setActiveSession] = useState<ActiveSession | null>(() => storage.get<ActiveSession | null>('active-session', null));
   const [lastCompletedSession, setLastCompletedSession] = useState<SavedSession | null>(null);
-  const [fullGardenUnlocked, setFullGardenUnlockedState] = useState(() => storage.get('full-garden', false));
+  const [fullGardenUnlocked, setFullGardenUnlockedState] = useState(() => debugFullGardenUnlocked || storage.get('full-garden', false));
   const [fullGardenPrice, setFullGardenPrice] = useState('$4.99');
   const [fullGardenPackage, setFullGardenPackage] = useState<PurchasesPackage | null>(null);
   const [purchaseBusy, setPurchaseBusy] = useState(false);
@@ -153,7 +154,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     Promise.all([readFullGardenEntitlement(), loadFullGardenOffer()])
       .then(([entitled, offer]) => {
         if (!active) return;
-        if (entitled !== null) {
+        if (entitled !== null && !debugFullGardenUnlocked) {
           setFullGardenUnlockedState(entitled);
           storage.set('full-garden', entitled);
         }

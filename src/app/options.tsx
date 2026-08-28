@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 import { AppScreen, BodyText, ChoiceChip, PaperCard, PetalButton, ScreenTop, SectionLabel, Spacer } from '@/components/ui';
 import { colors, fonts, spacing } from '@/constants/theme';
@@ -34,26 +34,37 @@ export default function OptionsScreen() {
       </View>
       <View style={{ gap: spacing.sm }}>
         <SectionLabel>Prompt deck</SectionLabel>
-        {promptDecks.map((deck) => {
-          const locked = deck.paid && !game.fullGardenUnlocked;
-          return (
-            <PaperCard key={deck.id} title={deck.title} selected={game.selectedDeckId === deck.id} onPress={() => locked ? router.push('/full-garden') : game.setSelectedDeckId(deck.id)}>
-              <View style={{ gap: 6 }}>
-                <BodyText small>{deck.description} {deck.prompts.length} prompts.</BodyText>
-                {locked ? <Text style={{ color: colors.coral, fontFamily: fonts.bodyBold, fontSize: 12 }}>Full Garden</Text> : null}
+        <ScrollView
+          accessibilityLabel="Prompt deck shelf"
+          horizontal
+          nestedScrollEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: spacing.sm, paddingRight: spacing.lg }}
+        >
+          {promptDecks.map((deck) => {
+            const locked = deck.paid && !game.fullGardenUnlocked;
+            return (
+              <View key={deck.id} style={{ width: 280 }}>
+                <PaperCard title={deck.title} selected={game.selectedDeckId === deck.id} onPress={() => locked ? router.push('/full-garden') : game.setSelectedDeckId(deck.id)}>
+                  <View style={{ gap: 6 }}>
+                    <BodyText small>{deck.description} {deck.prompts.length} prompts.</BodyText>
+                    {locked ? <Text style={{ color: colors.coral, fontFamily: fonts.bodyBold, fontSize: 12 }}>Full Garden</Text> : null}
+                  </View>
+                </PaperCard>
               </View>
-            </PaperCard>
-          );
-        })}
-        {game.fullGardenUnlocked ? game.customDecks.map((deck) => (
-          <PaperCard key={deck.id} title={deck.title} selected={game.selectedDeckId === deck.id} onPress={() => game.setSelectedDeckId(deck.id)}>
-            <BodyText small>Your deck · {deck.prompts.length} prompts.</BodyText>
-          </PaperCard>
-        )) : null}
+            );
+          })}
+          {game.fullGardenUnlocked ? game.customDecks.map((deck) => (
+            <View key={deck.id} style={{ width: 280 }}>
+              <PaperCard title={deck.title} selected={game.selectedDeckId === deck.id} onPress={() => game.setSelectedDeckId(deck.id)}>
+                <BodyText small>Your deck · {deck.prompts.length} prompts.</BodyText>
+              </PaperCard>
+            </View>
+          )) : null}
+        </ScrollView>
       </View>
       <Spacer />
       <PetalButton onPress={() => { game.startSession(); router.replace('/pass'); }}>Start game</PetalButton>
     </AppScreen>
   );
 }
-

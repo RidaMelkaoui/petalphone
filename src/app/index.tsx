@@ -36,6 +36,11 @@ export default function HomeScreen() {
             ])}>Start over</PetalButton>
           </>
         ) : <PetalButton onPress={() => router.push('/players')}>Start a game</PetalButton>}
+        {game.history.length > 0 ? (
+          <PetalButton tone="secondary" onPress={() => router.push('/garden')}>
+            Your garden
+          </PetalButton>
+        ) : null}
         <PetalButton tone="secondary" onPress={() => router.push('/how-to-play')}>How to play</PetalButton>
       </View>
       <PaperCard title={game.fullGardenUnlocked ? 'Full Garden is ready' : 'Full Garden'} onPress={() => router.push('/full-garden')}>

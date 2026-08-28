@@ -1,10 +1,11 @@
 import { Fraunces_600SemiBold, Fraunces_700Bold, useFonts as useFraunces } from '@expo-google-fonts/fraunces';
 import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold, useFonts as useNunito } from '@expo-google-fonts/nunito';
 import { Stack } from 'expo-router/stack';
+import { Image } from 'expo-image';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { colors } from '@/constants/theme';
@@ -21,7 +22,24 @@ export default function RootLayout() {
     if (fontsLoaded) SplashScreen.hideAsync().catch(() => undefined);
   }, [fontsLoaded]);
 
-  if (!fontsLoaded) return <View style={{ flex: 1, backgroundColor: colors.cream }} />;
+  if (!fontsLoaded) {
+    return (
+      <View
+        accessibilityLabel="Petalphone is loading"
+        style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12, backgroundColor: colors.cream }}
+      >
+        <StatusBar style="dark" />
+        <Image
+          accessibilityLabel="sprout Bloomling"
+          source={require('../../assets/petalphone/bloomling-sprout.png')}
+          contentFit="contain"
+          style={{ width: 180, height: 180 }}
+        />
+        <Text style={{ color: colors.cocoa, fontSize: 28, fontWeight: '700' }}>Petalphone</Text>
+        <Text style={{ color: colors.cocoaSoft, fontSize: 16 }}>Getting the paper ready...</Text>
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

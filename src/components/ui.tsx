@@ -216,7 +216,12 @@ export function PaperCard({
 
   if (!onPress) return <View style={cardStyle}>{content}</View>;
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [cardStyle, { opacity: pressed ? 0.72 : 1 }]}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={({ pressed }) => [cardStyle, { opacity: pressed ? 0.72 : 1 }]}
+    >
       {content}
     </Pressable>
   );
@@ -337,4 +342,3 @@ export function Separator() {
 export function Spacer() {
   return <View style={{ flex: 1, minHeight: spacing.md }} />;
 }
-
